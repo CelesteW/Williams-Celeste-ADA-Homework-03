@@ -16,7 +16,9 @@ library(lmodel2)
 library(manipulate)
 ```
 
+
 ##PROBLEM 1
+
 
 ```{r z function}
 Z.prop.test <- function(p1,n1,p2,n2,alt,CL) {
@@ -61,10 +63,12 @@ Z.prop.test(p1,n1,p2,n2,alt,CL)
 ##PROBLEM 2
 
 
+
 ####Fit the regression model and, using {ggplot2}, produce a scatterplot with the fitted line superimposed upon the data. Append the the fitted model equation to your plot.
 
 
-```{r p2p1}
+
+```{r p2data}
 f<-"~/Desktop/KamilarandCooperData.csv"
 d <- read_csv(f, col_names = TRUE)
 head(d)
@@ -72,7 +76,11 @@ names(d)
 d<- d[!(is.na(d$Brain_Size_Species_Mean)),]
 d <- d[!(is.na(d$MaxLongevity_m)),]
 head(d)
+```
 
+
+*longevity~brain size*
+```{r p2p1}
 BS<- d$Brain_Size_Species_Mean
 ML<- d$MaxLongevity_m
 beta1<- cor(ML,BS) * (sd(ML)/sd(BS))
@@ -86,6 +94,8 @@ plot1
 ```
 
 
+
+*log(longevity)~log(brain size)*
 ```{r p2p1 log}
 log_BS<- log(d$Brain_Size_Species_Mean)
 log_ML<- log(d$MaxLongevity_m)
@@ -100,9 +110,12 @@ plot2
 ```
 
 
+
 ####Identify and interpret the point estimate of the slope (β1), as well as the outcome of the test associated with the hypotheses H0: β1=0; HA: β1≠0. Also, find a 90% CI for the slope (β1) parameter.
 
 
+
+*longevity~brain size*
 ```{r p2p2}
 pe_beta1<- predict(a,newdata = data.frame(Brain_Size_Species_Mean=beta1), interval = "confidence", level=0.90)
 pe_beta1
@@ -110,6 +123,8 @@ beta1==0
 ```
 
 
+
+*log(longevity)~log(brain size)*
 ```{r p2p2 log}
 pe2_beta1<- predict(b,newdata = data.frame(log_BS=beta1), interval = "confidence", level=0.90)
 pe2_beta1
@@ -117,9 +132,12 @@ beta1==0
 ```
 
 
+
 ####Using your model, add lines for the 90% confidence and prediction interval bands on the plot, and add a legend to differentiate between the lines.
 
 
+
+*longevity~brain size*
 ```{r p2p3}
 ci <- predict(a, newdata = data.frame(Brain_Size_Species_Mean = d$Brain_Size_Species_Mean), interval = "confidence", level = 0.90) 
 head(ci)
@@ -138,6 +156,8 @@ plot1
 ```
 
 
+
+*log(longevity)~log(brain size)*
 ```{r p2p3 log}
 ci2 <- predict(b, newdata = data.frame(logBrain_Size_Species_Mean = log_BS), interval = "confidence", level = 0.90) 
 head(ci2)
@@ -156,9 +176,12 @@ plot2
 ```
 
 
+
 ####Produce a point estimate and associated 90% prediction interval for the longevity of a species whose brain weight is 800 gm. Do you trust the model to predict observations accurately for this value of the explanatory variable? Why or why not?
 
 
+
+*longevity~brain size*
 ```{r p2p4}
 pi800<- predict(a,newdata = data.frame(Brain_Size_Species_Mean=800), interval = "prediction", level=0.90)
 pi800
@@ -167,6 +190,7 @@ pi800
 
 
 
+*log(longevity)~log(brain size)*
 ```{r p2p4 log}
 pi2_800<- predict(b,newdata = data.frame(log_BS=log(800)), interval = "prediction", level=0.90)
 pi2_800
