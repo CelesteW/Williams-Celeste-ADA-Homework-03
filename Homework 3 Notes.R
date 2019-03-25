@@ -65,18 +65,19 @@ head(ci)
 df1<- cbind(BS, ML, ci)
 df1<- as.data.frame(df1)
 head(df1)
-plot1<-ggplot(data = df1, aes(x=BS, y=ML))+geom_line(aes(x=BS,y=fit),colour="black") + geom_line(aes(x=BS,y=lwr),colour="blue") + geom_line(aes(x=BS,y=upr), colour="blue")
+plot1<-ggplot(data = df1, aes(x=BS, y=ML),label="y= 1.218x + 248.952")+geom_point()+geom_line(aes(x=BS,y=fit),colour="black") + geom_line(aes(x=BS,y=lwr,colour="blue"),size=1, show.legend = TRUE) + geom_line(aes(x=BS,y=upr, colour="blue"),size=1, show.legend = TRUE)+geom_text(x = 200, y = 850, label= "y= 1.218x + 248.952")+scale_color_discrete(name="Intervals",labels=c("Confidence","Confidence"))
 pi<-predict(a,newdata = data.frame(Brain_Size_Species_Mean = d$Brain_Size_Species_Mean), interval = "prediction", level = 0.90) 
 head(pi)
 df1<- cbind(df1,pi)
 names(df1)<- c("BS", "ML","CIfit", "CIlwr", "CIupr", "PIfit", "PIlwr","PIupr")
 head(df1)
-plot1<- plot1 + geom_line(data = df1, aes(x=BS, y=PIlwr), colour="red") + geom_line(data=df1, aes(x=BS, y=PIupr), colour= "red")+ geom_text(x = 200, y = 850, label= "y= 1.218x + 248.952")
+plot1<- plot1 + geom_line(data = df1, aes(x=BS, y=PIlwr, colour="red"),size=1, show.legend = TRUE) + geom_line(data=df1, aes(x=BS, y=PIupr, colour= "red"),size=1, show.legend = TRUE)+ geom_text(x = 200, y = 850, label= "y= 1.218x + 248.952")+ scale_color_discrete(name="Intervals",labels=c("Confidence","Prediction"))
 plot1
-
 
 pi800<- predict(a,newdata = data.frame(Brain_Size_Species_Mean=800), interval = "prediction", level=0.90)
 pi800
+
+
 #No, because most of the brain sizes are under 200 grams. Our data/graph may not accurately depict the longevity of species when the brain size is over a certain weight, or until there is more data for species.
 
 
@@ -102,14 +103,14 @@ head(ci2)
 df2<- cbind(log_BS, log_ML, ci2)
 df2<- as.data.frame(df2)
 head(df2)
-plot2<-ggplot(data = df2, aes(x=log_BS, y=log_ML))+geom_point()+geom_line(aes(x=log_BS,y=fit),colour="black") + geom_line(aes(x=log_BS,y=lwr),colour="blue") + geom_line(aes(x=log_BS,y=upr), colour="blue")
+plot2<-ggplot(data = df2, aes(x=log_BS, y=log_ML))+geom_point()+geom_line(aes(x=log_BS,y=fit),colour="black") + geom_line(aes(x=log_BS,y=lwr,colour="red"),size=1, show.legend = TRUE) + geom_line(aes(x=log_BS,y=upr, colour="red"),size=1, show.legend = TRUE)+scale_color_discrete(name="Intervals",labels=c("Confidence","Confidence"))
 plot2
 pi<-predict(b,newdata = data.frame(logBrain_Size_Species_Mean = log_BS), interval = "prediction", level = 0.90) 
 head(pi)
 df2<- cbind(df2,pi)
 names(df2)<- c("log_BS", "log_ML","CIfit", "CIlwr", "CIupr", "PIfit", "PIlwr","PIupr")
 head(df2)
-plot2<- plot2 + geom_line(data = df2, aes(x=log_BS, y=PIlwr), colour="red") + geom_line(data=df2, aes(x=log_BS, y=PIupr), colour= "red")+geom_text(x = 1.5, y = 6.25, label= "y = 0.234x + 4.879")
+plot2<- plot2 + geom_line(data = df2, aes(x=log_BS, y=PIlwr, colour="blue"),size=1, show.legend = TRUE) + geom_line(data=df2, aes(x=log_BS, y=PIupr, colour= "blue"),size=1, show.legend = TRUE)+geom_text(x = 1.5, y = 6.25, label= "y = 0.234x + 4.879")+scale_color_discrete(name="Intervals",labels=c("Prediction","Confidence"))
 plot2
 
 pi2_800<- predict(b,newdata = data.frame(log_BS=log(800)), interval = "prediction", level=0.90)
